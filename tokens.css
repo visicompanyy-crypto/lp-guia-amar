@@ -1,0 +1,66 @@
+:root {
+  /* cores */
+  --acc-ink:       #1A1A1A;
+  --acc-ink-soft:  #242424;
+  --acc-bone:      #EDE7DA;
+  --acc-bone-soft: rgba(237,231,218,.6);
+  --acc-petrol:    #2F4550;
+  --acc-petrol-dk: #1E2E38;
+  --acc-terra:     #B45F3D;
+  --acc-terra-dk:  #8E4A2E;
+  --acc-clay:      #D4896B;
+  --acc-line:      rgba(237,231,218,.15);
+
+  /* tipografia */
+  --font-display: 'Fraunces', serif;
+  --font-sans:    'Garet', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* motion */
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ——— reset mínimo ——— */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img { display: block; max-width: 100%; }
+
+/* ——— botões ——— */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: lowercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background .25s var(--ease),
+    color .25s var(--ease),
+    border-color .25s var(--ease);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn--solid {
+  background: var(--acc-terra);
+  color: var(--acc-bone);
+  border-color: var(--acc-terra);
+}
+.btn--solid:hover {
+  background: var(--acc-terra-dk);
+  border-color: var(--acc-terra-dk);
+}
+
+.btn--ghost-bone {
+  background: transparent;
+  color: var(--acc-bone);
+  border-color: rgba(237,231,218,.4);
+}
+.btn--ghost-bone:hover {
+  border-color: var(--acc-bone);
+}

@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>guia de compras · amar casa criativa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=garet@400,500,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  body {
+    background: var(--acc-ink);
+    color: var(--acc-bone);
+    overflow-x: hidden;
+  }
+
+  /* ——————— layout primitives ——————— */
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 720px) { .container { padding: 0 20px; } }
+
+  /* shared chrome strip used everywhere */
+  .strip-handles {
+    background: var(--acc-petrol);
+    color: var(--acc-bone);
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    align-items: center;
+    padding: 14px 28px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: lowercase;
+  }
+  .strip-handles svg { width: 28px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.4; }
+
+  .strip-words {
+    background: var(--acc-petrol);
+    color: var(--acc-bone);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 18px 32px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    letter-spacing: .42em;
+    text-transform: lowercase;
+  }
+  .strip-words > span:nth-child(2) { text-align: center; }
+  .strip-words > span:nth-child(3) { text-align: right; }
+  .strip-words--bone { background: var(--acc-bone-soft); color: var(--acc-petrol); }
+
+  /* —————————————————— HERO —————————————————— */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    background: var(--acc-petrol-dk);
+  }
+  .hero__art {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+  }
+  .hero__video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: -1;
+    opacity: .55;
+  }
+  .hero__art::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(180,95,61,.18), transparent 65%),
+      radial-gradient(ellipse at 80% 80%, rgba(47,69,80,.6), transparent 55%);
+    z-index: 0;
+  }
+  .hero__art::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(26,26,26,.4) 100%);
+    z-index: 1;
+  }
+  .hero__inner {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 120px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .hero__eyebrow {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: .42em;
+    text-transform: lowercase;
+    opacity: .85;
+    margin-bottom: 32px;
+  }
+  .hero__title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    color: var(--acc-bone);
+    font-size: clamp(96px, 18vw, 260px);
+    line-height: .82;
+    letter-spacing: -.04em;
+    margin: 0;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    font-style: italic;
+    text-shadow: 0 4px 40px rgba(0,0,0,.35);
+  }
+  .hero__divider {
+    width: 200px; height: 1px;
+    background: var(--acc-bone);
+    opacity: .5;
+    margin: 32px auto;
+  }
+  .hero__tag {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 380px;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    letter-spacing: .42em;
+    text-transform: lowercase;
+    opacity: .9;
+  }
+  .hero__tag > span:nth-child(2) { text-align: center; }
+  .hero__tag > span:nth-child(3) { text-align: right; }
+
+  .hero__sub {
+    margin: 64px auto 0;
+    max-width: 620px;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.5;
+    color: var(--acc-bone);
+    opacity: .9;
+  }
+  .hero__cta { margin-top: 40px; display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+  /* scroll indicator */
+  .hero__scroll {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 3;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: .3em; text-transform: lowercase; opacity: .7;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .hero__scroll::after {
+    content: ""; width: 1px; height: 32px;
+    background: linear-gradient(180deg, var(--acc-bone), transparent);
+    animation: scrollDown 2s ease-in-out infinite;
+  }
+  @keyframes scrollDown {
+    0%,100% { transform: scaleY(.4); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+  }
+
+  /* —————————————————— BASTIDORES —————————————————— */
+  .basti {
+    background: var(--acc-bone);
+    color: var(--acc-ink);
+    padding: 0;
+  }
+  .basti__inner {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 120px 32px;
+  }
+  .basti__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .3em;
+    text-transform: lowercase;
+    opacity: .55;
+    margin-bottom: 32px;
+  }
+  .basti__title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(40px, 5.5vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    margin: 0 0 48px;
+    max-width: 16ch;
+  }
+  .basti__title em { font-style: italic; color: var(--acc-terra); font-variation-settings: "WONK" 1; }
+  .basti__body {
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 640px;
+    color: var(--acc-ink);
+  }
+  .basti__body p + p { margin-top: 1.2em; }
+  .basti__body strong { font-weight: 600; }
+  .basti__sig {
+    display: inline-block;
+    margin-top: 56px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 32px;
+    color: var(--acc-petrol);
+    font-variation-settings: "WONK" 1;
+  }
+
+  /* —————————————————— STATS —————————————————— */
+  .stats {
+    background: var(--acc-bone);
+    color: var(--acc-ink);
+    padding: 0 0 120px;
+  }
+  .stats__grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(26,26,26,.15);
+  }
+  .stat {
+    padding: 48px 24px;
+    border-right: 1px solid rgba(26,26,26,.15);
+  }
+  .stat:last-child { border-right: none; }
+  .stat__num {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: 64px;
+    line-height: 1;
+    letter-spacing: -.03em;
+    color: var(--acc-terra);
+  }
+  .stat__num em { font-style: italic; }
+  .stat__lbl {
+    margin-top: 12px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    letter-spacing: .15em;
+    text-transform: lowercase;
+    opacity: .65;
+    line-height: 1.4;
+  }
+  @media (max-width: 720px) {
+    .stats__grid { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid rgba(26,26,26,.15); }
+  }
+
+  /* —————————————————— PARA QUEM —————————————————— */
+  .forwhom {
+    background: var(--acc-ink);
+    color: var(--acc-bone);
+    padding: 140px 0;
+  }
+  .forwhom__head {
+    max-width: 1100px;
+    margin: 0 auto 80px;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: end;
+  }
+  .forwhom__title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: .95;
+    letter-spacing: -.02em;
+    margin: 0;
+  }
+  .forwhom__title em { font-style: italic; color: var(--acc-terra); }
+  .forwhom__lead {
+    font-size: 17px;
+    line-height: 1.6;
+    opacity: .8;
+    max-width: 420px;
+    margin: 0 0 0 auto;
+  }
+  .forwhom__list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--acc-line);
+  }
+  .fw {
+    padding: 40px 0;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    border-bottom: 1px solid var(--acc-line);
+    align-items: start;
+  }
+  .fw:nth-child(odd) { padding-right: 32px; border-right: 1px solid var(--acc-line); }
+  .fw:nth-child(even) { padding-left: 32px; }
+  .fw__num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .25em;
+    opacity: .55;
+    padding-top: 6px;
+  }
+  .fw__txt {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.4;
+    letter-spacing: -.005em;
+  }
+  .fw__txt em { font-family: var(--font-display); font-style: italic; color: var(--acc-terra); font-weight: 400; }
+  @media (max-width: 720px) {
+    .forwhom__head { grid-template-columns: 1fr; }
+    .forwhom__lead { margin: 0; }
+    .forwhom__list { grid-template-columns: 1fr; }
+    .fw:nth-child(odd) { padding-right: 0; border-right: none; }
+    .fw:nth-child(even) { padding-left: 0; }
+  }
+
+  /* —————————————————— CATEGORIAS (sumário) —————————————————— */
+  .cats {
+    background: var(--acc-petrol-dk);
+    color: var(--acc-bone);
+    padding: 140px 0;
+    position: relative;
+  }
+  .cats__head {
+    max-width: 1100px; margin: 0 auto 64px; padding: 0 32px;
+  }
+  .cats__eye {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .3em;
+    opacity: .6;
+    margin-bottom: 24px;
+    text-transform: lowercase;
+  }
+  .cats__title {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(56px, 9vw, 140px);
+    letter-spacing: .02em;
+    line-height: .9;
+    text-transform: lowercase;
+    margin: 0;
+  }
+  .cats__lead {
+    margin-top: 32px;
+    font-size: 17px;
+    line-height: 1.6;
+    opacity: .85;
+    max-width: 600px;
+  }
+
+  .cats__grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--acc-line);
+  }
+  .cat {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--acc-line);
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 20px;
+    align-items: baseline;
+    position: relative;
+    padding-right: 24px;
+  }
+  .cat:not(:nth-child(3n)) { border-right: 1px solid var(--acc-line); padding-right: 24px; }
+  .cat:not(:nth-child(3n)) ~ .cat { padding-left: 24px; }
+  .cat__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .15em;
+    color: var(--acc-terra);
+    opacity: .9;
+  }
+  .cat__name {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 22px;
+    letter-spacing: .02em;
+    text-transform: lowercase;
+  }
+  .cat__count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    opacity: .55;
+  }
+  @media (max-width: 900px) {
+    .cats__grid { grid-template-columns: repeat(2, 1fr); }
+    .cat:not(:nth-child(3n)) { border-right: none; padding-right: 0; }
+    .cat:nth-child(odd) { border-right: 1px solid var(--acc-line); padding-right: 20px; }
+    .cat:nth-child(even) { padding-left: 20px; }
+  }
+  @media (max-width: 600px) {
+    .cats__grid { grid-template-columns: 1fr; }
+    .cat { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
+  }
+
+  /* —————————————————— PRÉVIA SPREAD —————————————————— */
+  .preview {
+    background: var(--acc-ink);
+    padding: 140px 0;
+  }
+  .preview__head {
+    max-width: 1100px; margin: 0 auto 80px; padding: 0 32px;
+    text-align: center;
+  }
+  .preview__eye {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .3em; opacity: .55; margin-bottom: 16px;
+    text-transform: lowercase;
+  }
+  .preview__title {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(40px, 5vw, 64px); line-height: 1.05;
+    letter-spacing: -.02em; margin: 0;
+  }
+  .preview__title em { font-style: italic; color: var(--acc-terra); font-variation-settings: "WONK" 1; }
+
+  .preview__rail {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 0 32px 32px;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: var(--acc-petrol) transparent;
+  }
+  .preview__rail::-webkit-scrollbar { height: 6px; }
+  .preview__rail::-webkit-scrollbar-track { background: transparent; }
+  .preview__rail::-webkit-scrollbar-thumb { background: var(--acc-petrol); border-radius: 4px; }
+
+  .spread {
+    flex: 0 0 auto;
+    width: 320px;
+    aspect-ratio: 357/639;
+    background: var(--acc-bone);
+    border-radius: 4px;
+    overflow: hidden;
+    scroll-snap-align: center;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,.7);
+    position: relative;
+  }
+  .spread img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .spread__cap {
+    position: absolute; bottom: 16px; left: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .25em;
+    text-transform: lowercase;
+    color: var(--acc-bone);
+    background: rgba(26,26,26,.7);
+    padding: 6px 10px;
+    border-radius: 2px;
+    backdrop-filter: blur(8px);
+  }
+
+  /* —————————————————— ATUALIZAÇÕES —————————————————— */
+  .updates {
+    background: var(--acc-bone);
+    color: var(--acc-ink);
+    padding: 140px 0;
+  }
+  .updates__inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .updates__eye {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .3em; opacity: .55; margin-bottom: 24px;
+    text-transform: lowercase;
+  }
+  .updates__title {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(44px, 5vw, 72px); line-height: 1; letter-spacing: -.02em;
+    margin: 0 0 32px;
+  }
+  .updates__title em { font-style: italic; color: var(--acc-terra); font-variation-settings: "WONK" 1; }
+  .updates__body { font-size: 17px; line-height: 1.65; max-width: 480px; }
+  .updates__body p + p { margin-top: 1em; }
+
+  .calendar {
+    background: var(--acc-petrol);
+    color: var(--acc-bone);
+    padding: 40px;
+    border-radius: 4px;
+    aspect-ratio: 4/4.4;
+  }
+  .cal__head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid rgba(237,231,218,.2);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: lowercase;
+  }
+  .cal__head em { font-family: var(--font-display); font-size: 22px; font-style: italic; letter-spacing: -.01em; color: var(--acc-bone); }
+  .cal__rows { display: flex; flex-direction: column; gap: 16px; }
+  .cal__row {
+    display: grid; grid-template-columns: 60px 1fr auto;
+    gap: 16px; padding-bottom: 14px;
+    border-bottom: 1px solid rgba(237,231,218,.15);
+    align-items: baseline;
+  }
+  .cal__date { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; opacity: .85; }
+  .cal__lbl { font-family: var(--font-sans); font-size: 14px; letter-spacing: .02em; }
+  .cal__count { font-family: var(--font-mono); font-size: 11px; opacity: .65; letter-spacing: .1em; }
+  .cal__row--new .cal__lbl::before {
+    content: "•";
+    color: var(--acc-terra);
+    margin-right: 8px;
+  }
+  @media (max-width: 800px) {
+    .updates__inner { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  /* —————————————————— FERNANDA / VIDEO ————————————————— */
+  .fernanda {
+    background: var(--acc-bone);
+    color: var(--acc-ink);
+    padding: 140px 0;
+  }
+  .fernanda__inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 80px;
+    align-items: center;
+  }
+  .fernanda__eye {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .3em; opacity: .55;
+    text-transform: lowercase; margin-bottom: 24px;
+  }
+  .fernanda__title {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(40px, 5vw, 68px); line-height: 1; letter-spacing: -.02em;
+    margin: 0 0 32px; max-width: 12ch;
+  }
+  .fernanda__title em { font-style: italic; color: var(--acc-terra); font-variation-settings: "WONK" 1; }
+  .fernanda__quote {
+    font-family: var(--font-sans); font-weight: 300;
+    font-size: 18px; line-height: 1.6;
+    max-width: 480px; margin: 0 0 32px;
+  }
+  .fernanda__by {
+    display: inline-flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--acc-petrol);
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: .25em; text-transform: lowercase;
+    border-bottom: 1px solid currentColor; padding-bottom: 4px;
+    transition: color .25s var(--ease);
+  }
+  .fernanda__by:hover { color: var(--acc-terra); }
+  .fernanda__by strong { font-weight: 600; }
+  .fernanda__video {
+    aspect-ratio: 9/16;
+    background: var(--acc-ink);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,.45);
+    position: relative;
+  }
+  .fernanda__video video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .fernanda__plate {
+    position: absolute; bottom: 16px; left: 16px;
+    background: rgba(26,26,26,.7); backdrop-filter: blur(8px);
+    color: var(--acc-bone);
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: .25em; text-transform: lowercase;
+    padding: 6px 10px; border-radius: 2px;
+  }
+  @media (max-width: 800px) {
+    .fernanda__inner { grid-template-columns: 1fr; gap: 48px; }
+    .fernanda__video { max-width: 320px; margin: 0 auto; width: 100%; }
+  }
+
+  /* —————————————————— DEPOIMENTOS ————————————————— */
+  .voices {
+    background: var(--acc-ink);
+    padding: 140px 0;
+  }
+  .voices__head {
+    max-width: 1100px; margin: 0 auto 64px; padding: 0 32px;
+    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: end;
+  }
+  .voices__eye {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .3em; opacity: .55; text-transform: lowercase;
+  }
+  .voices__title {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(40px, 4.5vw, 64px); line-height: 1; letter-spacing: -.02em;
+    margin: 0;
+  }
+  .voices__title em { font-style: italic; color: var(--acc-terra); font-variation-settings: "WONK" 1; }
+  .voices__grid {
+    max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+  }
+  .quote {
+    background: var(--acc-ink-soft);
+    padding: 40px;
+    border: 1px solid var(--acc-line);
+    display: flex; flex-direction: column; gap: 24px;
+    min-height: 320px;
+  }
+  .quote__mark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 64px;
+    color: var(--acc-terra);
+    line-height: .5;
+    height: 24px;
+  }
+  .quote__txt {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .quote__by {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: lowercase;
+    opacity: .7;
+    border-top: 1px solid var(--acc-line);
+    padding-top: 16px;
+  }
+  @media (max-width: 900px) {
+    .voices__grid { grid-template-columns: 1fr; }
+    .voices__head { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  /* —————————————————— FAQ —————————————————— */
+  .faq {
+    background: var(--acc-bone);
+    color: var(--acc-ink);
+    padding: 140px 0;
+  }
+  .faq__head {
+    max-width: 1100px; margin: 0 auto 64px; padding: 0 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: end;
+  }
+  .faq__title {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(44px, 5.5vw, 80px); line-height: .95; letter-spacing: -.02em;
+    margin: 0;
+  }
+  .faq__title em { font-style: italic; color: var(--acc-terra); font-variation-settings: "WONK" 1; }
+  .faq__lead { font-size: 16px; line-height: 1.6; opacity: .75; max-width: 380px; margin: 0 0 0 auto; }
+  .faq__list {
+    max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    border-top: 1px solid rgba(26,26,26,.18);
+  }
+  .qa {
+    border-bottom: 1px solid rgba(26,26,26,.18);
+  }
+  .qa__btn {
+    width: 100%;
+    background: none; border: none; cursor: pointer;
+    text-align: left;
+    padding: 32px 0;
+    display: grid; grid-template-columns: 60px 1fr 40px;
+    gap: 24px; align-items: center;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(20px, 2vw, 26px);
+    color: var(--acc-ink);
+    letter-spacing: -.005em;
+  }
+  .qa__num {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .25em; opacity: .55;
+  }
+  .qa__plus {
+    width: 24px; height: 24px; position: relative;
+    transition: transform .35s var(--ease);
+  }
+  .qa__plus::before, .qa__plus::after {
+    content: ""; position: absolute; top: 50%; left: 0; width: 100%; height: 1px;
+    background: var(--acc-ink);
+  }
+  .qa__plus::after { transform: rotate(90deg); transition: transform .35s var(--ease); }
+  .qa[open] .qa__plus::after { transform: rotate(0deg); }
+  .qa__body {
+    padding: 0 64px 32px;
+    font-family: var(--font-sans);
+    font-size: 16px; line-height: 1.7; opacity: .8;
+    max-width: 720px;
+  }
+  @media (max-width: 720px) {
+    .faq__head { grid-template-columns: 1fr; }
+    .faq__lead { margin: 0; }
+    .qa__body { padding: 0 0 32px 84px; }
+  }
+
+  /* —————————————————— OFERTA / CTA —————————————————— */
+  .offer {
+    background: var(--acc-ink);
+    padding: 140px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .offer::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(180,95,61,.15), transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(47,69,80,.4), transparent 50%);
+  }
+  .offer__inner {
+    position: relative;
+    max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    text-align: center;
+  }
+  .offer__eye {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .3em; opacity: .65; margin-bottom: 24px;
+    text-transform: lowercase;
+  }
+  .offer__title {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(56px, 8vw, 120px); line-height: .9; letter-spacing: -.03em;
+    margin: 0 auto 40px; max-width: 14ch;
+  }
+  .offer__title em { font-style: italic; color: var(--acc-terra); font-variation-settings: "WONK" 1; }
+  .offer__lead {
+    font-size: 18px; line-height: 1.6; opacity: .85;
+    max-width: 560px; margin: 0 auto 64px;
+  }
+
+  .price-card {
+    max-width: 560px; margin: 0 auto;
+    background: var(--acc-bone);
+    color: var(--acc-ink);
+    padding: 56px 48px;
+    text-align: left;
+    position: relative;
+  }
+  .price-card__eye {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .3em; opacity: .55;
+    text-transform: lowercase;
+    margin-bottom: 32px;
+  }
+  .price-card__amount {
+    display: flex; align-items: baseline; gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: 88px;
+    line-height: 1;
+    letter-spacing: -.03em;
+    color: var(--acc-petrol);
+  }
+  .price-card__cents {
+    font-size: 28px; opacity: .65;
+  }
+  .price-card__currency {
+    font-size: 28px; opacity: .65; align-self: flex-start; margin-top: 16px;
+  }
+  .price-card__sub {
+    margin-top: 16px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: .75;
+  }
+  .price-card__bullets {
+    list-style: none; padding: 0; margin: 32px 0;
+    display: flex; flex-direction: column; gap: 12px;
+    font-size: 14px;
+  }
+  .price-card__bullets li {
+    display: grid; grid-template-columns: 16px 1fr; gap: 12px;
+    line-height: 1.5;
+  }
+  .price-card__bullets li::before {
+    content: "+"; color: var(--acc-terra); font-weight: 600;
+  }
+  .price-card .btn { width: 100%; justify-content: center; padding: 22px; font-size: 14px; }
+  .price-card__guar {
+    margin-top: 16px;
+    text-align: center;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .2em; opacity: .55;
+    text-transform: lowercase;
+  }
+
+  /* —————————————————— FOOTER —————————————————— */
+  .foot {
+    background: var(--acc-petrol-dk);
+    color: var(--acc-bone);
+    padding: 96px 0 32px;
+  }
+  .foot__inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px;
+    margin-bottom: 80px;
+  }
+  .foot__brand {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-style: italic;
+    font-size: 56px;
+    line-height: .9;
+    letter-spacing: -.03em;
+    color: var(--acc-bone);
+    margin: 0 0 16px;
+    font-variation-settings: "WONK" 1;
+  }
+  .foot__sub {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: .25em;
+    text-transform: lowercase;
+    opacity: .7;
+  }
+  .foot__col h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .25em;
+    opacity: .6;
+    text-transform: lowercase;
+    margin: 0 0 24px;
+    font-weight: 400;
+  }
+  .foot__col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .foot__col a {
+    color: inherit; text-decoration: none;
+    font-family: var(--font-sans); font-size: 15px;
+    letter-spacing: .02em; text-transform: lowercase;
+  }
+  .foot__col a:hover { color: var(--acc-terra); }
+
+  .foot__bottom {
+    max-width: 1100px; margin: 0 auto; padding: 24px 32px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--acc-line);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: lowercase;
+    opacity: .55;
+  }
+  @media (max-width: 720px) {
+    .foot__inner { grid-template-columns: 1fr; gap: 40px; }
+    .foot__bottom { flex-direction: column; gap: 12px; }
+  }
+
+  /* —————————————————— TWEAK ALTS —————————————————— */
+  /* paleta alt: petróleo dominante (sem terracota) */
+  body[data-palette="petrol"] { --acc-terra: #6B9AA8; --acc-terra-dk: #4F7E8C; --acc-clay: #9CC0CC; }
+  /* paleta alt: monocromático bone+ink */
+  body[data-palette="mono"] { --acc-terra: #8E7A5E; --acc-terra-dk: #6E5C42; --acc-clay: #B5A485; }
+
+  /* hero layout alt: split */
+  body[data-hero="split"] .hero { min-height: 100vh; }
+  body[data-hero="split"] .hero__art {
+    background: var(--acc-bone);
+  }
+  body[data-hero="split"] .hero__art::before {
+    background: url("assets/hero-amar.png") right center/cover no-repeat;
+    clip-path: inset(0 0 0 50%);
+  }
+  body[data-hero="split"] .hero__art::after {
+    background: linear-gradient(90deg, var(--acc-bone) 50%, transparent 50%);
+  }
+  body[data-hero="split"] .hero__inner { text-align: left; max-width: 50%; padding-right: 64px; padding-left: 64px; }
+  body[data-hero="split"] .hero__title { color: var(--acc-ink); text-shadow: none; }
+  body[data-hero="split"] .hero__sub { color: var(--acc-ink); margin-left: 0; }
+  body[data-hero="split"] .hero__divider { margin-left: 0; background: var(--acc-ink); }
+  body[data-hero="split"] .hero__tag { margin-left: 0; color: var(--acc-ink); }
+  body[data-hero="split"] .hero__eyebrow { color: var(--acc-ink); opacity: .65; }
+  body[data-hero="split"] .hero__cta { justify-content: flex-start; }
+  body[data-hero="split"] .hero__scroll { color: var(--acc-ink); }
+  @media (max-width: 800px) {
+    body[data-hero="split"] .hero__art::before { clip-path: none; }
+    body[data-hero="split"] .hero__art::after { background: linear-gradient(180deg, var(--acc-bone) 30%, transparent 50%); }
+    body[data-hero="split"] .hero__inner { max-width: 100%; padding: 80px 24px; }
+  }
+
+  /* hero layout alt: editorial (typo gigante full bleed) */
+  body[data-hero="editorial"] .hero__art::before { opacity: .25; }
+  body[data-hero="editorial"] .hero__title { font-size: clamp(120px, 28vw, 420px); }
+
+  /* —————————————————— VIDEO DEPOIMENTOS ————————————————— */
+  .video-depo {
+    background: var(--acc-ink);
+    padding: 0 0 140px;
+  }
+  .video-depo__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .video-depo__wrap {
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,.7);
+    background: var(--acc-ink-soft);
+  }
+  .video-depo__wrap video {
+    width: 100%;
+    display: block;
+  }
+  .video-depo__text {
+    color: var(--acc-bone);
+  }
+  .video-depo__eye {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .3em;
+    text-transform: lowercase;
+    opacity: .55;
+    margin-bottom: 24px;
+  }
+  .video-depo__title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    margin: 0 0 28px;
+  }
+  .video-depo__title em {
+    font-style: italic;
+    color: var(--acc-terra);
+    font-variation-settings: "WONK" 1;
+  }
+  .video-depo__body {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.7;
+    opacity: .85;
+    max-width: 480px;
+  }
+  .video-depo__by {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: lowercase;
+    opacity: .7;
+  }
+  .video-depo__ig {
+    color: var(--acc-terra);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    transition: opacity .2s;
+  }
+  .video-depo__ig:hover { opacity: .7; }
+  .video-depo__cta {
+    margin-top: 28px;
+  }
+  @media (max-width: 800px) {
+    .video-depo__inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .video-depo__wrap { max-width: 300px; }
+  }
+</style>
+</head>
+<body data-palette="terra" data-hero="centered" data-density="default">
+
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+
+const { useState, useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "terra",
+  "hero": "centered",
+  "ctaLabel": "quero o guia →",
+  "showStats": true,
+  "showVoices": true,
+  "showCalendar": true
+}/*EDITMODE-END*/;
+
+const EDUZZ_URL = "https://sun.eduzz.com/Q9N23K8Z01?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnB8FecRGzSd5cENaxA0H48rnR7fL0aapYCRhFt2cIrr3CLSnGUvirGo3RtTI_aem_ZqEsuUtHBbpZvd2b1FH0bQ&utm_id=97760_v0_s00_e0_tv3_a1denni2yruc06";
+
+/* ——— icons ——— */
+const InfinityMark = () => (
+  <svg viewBox="0 0 32 14" aria-hidden="true">
+    <path d="M3 7c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5-2.2 4.5-5 4.5-5-2-5-4.5z M19 7c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5-2.2 4.5-5 4.5-5-2-5-4.5z M11 7h10" />
+  </svg>
+);
+
+const StripHandles = () => (
+  <div className="strip-handles">
+    <span>@amarcasacriativa</span>
+    <span>@guiacasacriativa</span>
+    <span><InfinityMark /></span>
+  </div>
+);
+
+const StripWords = ({ variant }) => (
+  <div className={"strip-words" + (variant === "bone" ? " strip-words--bone" : "")}>
+    <span>amar</span><span>casa</span><span>criativa</span>
+  </div>
+);
+
+/* ——— hero ——— */
+const Hero = ({ tweaks }) => (
+  <section className="hero">
+    <StripHandles />
+    <div className="hero__art">
+      <video className="hero__video" autoPlay muted loop playsInline preload="auto" src="assets/hero.mp4" />
+      <div className="hero__inner">
+        <div className="hero__eyebrow">guia de compras · edição 2026</div>
+        <h1 className="hero__title">amar</h1>
+        <div className="hero__divider"></div>
+        <div className="hero__tag">
+          <span>amar</span><span>casa</span><span>criativa</span>
+        </div>
+        <p className="hero__sub">
+          uma curadoria viva com mais de 1.300 itens dos bastidores dos
+          projetos da casa criativa, para você montar com intenção, sem
+          travar nas escolhas.
+        </p>
+        <div className="hero__cta">
+          <a href={EDUZZ_URL} target="_blank" rel="noopener" className="btn btn--solid">{tweaks.ctaLabel}</a>
+          <a href="#bastidores" className="btn btn--ghost-bone">conhecer o guia</a>
+        </div>
+      </div>
+      <div className="hero__scroll">role <span></span></div>
+    </div>
+    <StripWords />
+  </section>
+);
+
+/* ——— bastidores ——— */
+const Bastidores = () => (
+  <section className="basti" id="bastidores">
+    <div className="basti__inner">
+      <div className="basti__eyebrow">/ 01 · o que é</div>
+      <h2 className="basti__title">
+        este guia nasce dos <em>bastidores</em> dos nossos projetos.
+      </h2>
+      <div className="basti__body">
+        <p>ao longo do tempo, percebemos que uma das maiores dúvidas de quem está montando ou transformando a casa é saber <strong>onde encontrar os itens certos</strong>, aqueles que realmente fazem diferença no resultado final.</p>
+        <p>por isso criamos este guia.</p>
+        <p>aqui reunimos uma curadoria de peças que utilizamos no nosso dia a dia de projetos. são itens que ajudam a compor ambientes com mais <strong>intenção, equilíbrio e personalidade</strong>.</p>
+        <p>sempre que possível, incluímos pequenas orientações sobre proporção, uso e composição, para ajudar você a tomar decisões com mais segurança.</p>
+      </div>
+      <span className="basti__sig">amar casa criativa</span>
+    </div>
+  </section>
+);
+
+/* ——— stats ——— */
+const Stats = () => (
+  <section className="stats">
+    <div className="stats__grid">
+      <div className="stat"><div className="stat__num">1.<em>300</em>+</div><div className="stat__lbl">itens<br/>curados</div></div>
+      <div className="stat"><div className="stat__num">11</div><div className="stat__lbl">categorias<br/>completas</div></div>
+      <div className="stat"><div className="stat__num">12</div><div className="stat__lbl">atualizações<br/>por ano</div></div>
+      <div className="stat"><div className="stat__num">∞</div><div className="stat__lbl">acessos<br/>vitalícios</div></div>
+    </div>
+  </section>
+);
+
+/* ——— para quem ——— */
+const FORWHOM = [
+  "para quem quer montar ou renovar um ambiente com mais segurança",
+  "para quem busca praticidade na hora de comprar",
+  "para quem deseja seguir um estilo semelhante aos projetos da casa criativa",
+  "para quem prefere executar o projeto por conta própria, com orientação profissional"
+];
+const ForWhom = () => (
+  <section className="forwhom">
+    <div className="forwhom__head">
+      <h2 className="forwhom__title">para <em>quem</em><br/>é esse guia</h2>
+      <p className="forwhom__lead">um material pensado para quem quer um lar com calma, identidade e gosto, sem precisar começar do zero a cada decisão.</p>
+    </div>
+    <div className="forwhom__list">
+      {FORWHOM.map((t, i) => (
+        <div className="fw" key={i}>
+          <div className="fw__num">{String(i+1).padStart(2,"0")}</div>
+          <div className="fw__txt">{t}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
+
+/* ——— categorias ——— */
+const CATS = [
+  ["01", "móveis", "182 itens"],
+  ["02", "estofados", "76 itens"],
+  ["03", "mesas e cadeiras", "143 itens"],
+  ["04", "tapetes", "98 itens"],
+  ["05", "têxteis", "87 itens"],
+  ["06", "decoração", "211 itens"],
+  ["07", "louças e mesa posta", "94 itens"],
+  ["08", "acessórios de banheiro", "63 itens"],
+  ["09", "apoios e prateleiras", "58 itens"],
+  ["10", "iluminação", "126 itens"],
+  ["11", "elementos naturais", "42 itens"],
+  ["12", "arte e quadros", "120 itens"],
+];
+const Categories = () => (
+  <section className="cats">
+    <div className="cats__head">
+      <div className="cats__eye">/ 03 · sumário</div>
+      <h1 className="cats__title">o que tem<br/>dentro</h1>
+      <p className="cats__lead">12 capítulos organizados por ambiente e função, com fotos, links diretos para compra e dicas de proporção.</p>
+    </div>
+    <div className="cats__grid">
+      {CATS.map(([n, name, cnt]) => (
+        <div className="cat" key={n}>
+          <div className="cat__num">{n}</div>
+          <div className="cat__name">{name}</div>
+          <div className="cat__count">{cnt}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
+
+/* ——— preview rail ——— */
+const Preview = () => (
+  <section className="preview">
+    <div className="preview__head">
+      <div className="preview__eye">/ 04 · por dentro</div>
+      <h2 className="preview__title">um <em>passeio</em> pelas páginas</h2>
+    </div>
+    <div className="preview__rail">
+      <div className="spread"><img src="assets/spread-capa.png" alt="capa" /><span className="spread__cap">capa · vol. 02</span></div>
+      <div className="spread"><img src="assets/spread-bastidores2.png" alt="bastidores" /><span className="spread__cap">01 · bastidores</span></div>
+      <div className="spread"><img src="assets/spread-sumario2.png" alt="sumário" /><span className="spread__cap">02 · sumário</span></div>
+      <div className="spread"><img src="assets/spread-banheiro.png" alt="banheiro" /><span className="spread__cap">06 · banheiro</span></div>
+      <div className="spread"><img src="assets/spread-caixas.png" alt="caixas organizadoras" /><span className="spread__cap">07 · organização</span></div>
+      <div className="spread"><img src="assets/spread-lixeiras.png" alt="lixeiras" /><span className="spread__cap">07 · lixeiras</span></div>
+      <div className="spread"><img src="assets/spread-prateleiras.png" alt="prateleiras" /><span className="spread__cap">09 · apoios</span></div>
+    </div>
+  </section>
+);
+
+/* ——— calendar/updates ——— */
+const Updates = () => (
+  <section className="updates">
+    <div className="updates__inner">
+      <div>
+        <div className="updates__eye">/ 05 · atualização mensal</div>
+        <h2 className="updates__title">um material <em>vivo</em>.</h2>
+        <div className="updates__body">
+          <p>todo mês, novos itens entram no guia: lançamentos, substituições inteligentes para produtos que saem do mercado e tendências relevantes para os projetos da casa criativa.</p>
+          <p>você compra uma vez e <strong>recebe as atualizações para sempre</strong>.</p>
+        </div>
+      </div>
+      <div className="calendar">
+        <div className="cal__head">
+          <span>edições · 2026</span>
+          <em>maio</em>
+        </div>
+        <div className="cal__rows">
+          <div className="cal__row cal__row--new"><span className="cal__date">05·26</span><span className="cal__lbl">linho artesanal · mesa</span><span className="cal__count">+24 itens</span></div>
+          <div className="cal__row cal__row--new"><span className="cal__date">05·26</span><span className="cal__lbl">arandelas em latão</span><span className="cal__count">+18 itens</span></div>
+          <div className="cal__row"><span className="cal__date">04·26</span><span className="cal__lbl">tapetes naturais</span><span className="cal__count">31 itens</span></div>
+          <div className="cal__row"><span className="cal__date">03·26</span><span className="cal__lbl">cerâmica autoral</span><span className="cal__count">22 itens</span></div>
+          <div className="cal__row"><span className="cal__date">02·26</span><span className="cal__lbl">cestaria & fibras</span><span className="cal__count">15 itens</span></div>
+          <div className="cal__row"><span className="cal__date">01·26</span><span className="cal__lbl">edição de aniversário</span><span className="cal__count">+57 itens</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+/* ——— voices ——— */
+const VOICES = [
+  ["o guia me poupou semanas de pesquisa. comprei tudo da sala numa tarde só, com a sensação de que cada peça conversava com a próxima.", "marina, são paulo"],
+  ["o que mais gosto é receber as atualizações. é como se a curadoria continuasse trabalhando comigo mesmo depois da compra.", "renata, belo horizonte"],
+  ["era exatamente o que eu precisava: estilo da casa criativa sem precisar contratar um projeto inteiro. linkozinho direto pra compra, salvou.", "júlia, curitiba"],
+];
+const Voices = () => (
+  <section className="voices">
+    <div className="voices__head">
+      <div className="voices__eye">/ 06 · depoimentos</div>
+      <h2 className="voices__title">quem <em>já</em> tem em casa</h2>
+    </div>
+    <div className="voices__grid">
+      {VOICES.map(([t, by], i) => (
+        <div className="quote" key={i}>
+          <div className="quote__mark">"</div>
+          <div className="quote__txt">{t}</div>
+          <div className="quote__by">{by}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
+
+/* ——— video depoimentos ——— */
+const VideoDepo = () => (
+  <section className="video-depo">
+    <div className="video-depo__inner">
+      <div className="video-depo__wrap">
+        <video
+          controls
+          playsInline
+          preload="metadata"
+          src="assets/depoimentos.mp4"
+        />
+      </div>
+      <div className="video-depo__text">
+        <div className="video-depo__eye">/ depoimento real</div>
+        <h2 className="video-depo__title">o guia que <em>simplificou</em> cada escolha.</h2>
+        <p className="video-depo__body">
+          Fernanda Souza usou o guia de compras da amar casa criativa no seu processo de montagem e transformou horas de pesquisa em decisões certeiras. com a curadoria em mãos, encontrar os objetos e decorações certos deixou de ser um obstáculo e virou parte natural do projeto.
+        </p>
+        <div className="video-depo__by">
+          <a href="https://www.instagram.com/fernandasouzaoficial/" target="_blank" rel="noopener" className="video-depo__ig">@fernandasouzaoficial</a>
+          <span> · cliente amar</span>
+        </div>
+        <a href={EDUZZ_URL} target="_blank" rel="noopener" className="btn btn--solid video-depo__cta">quero o guia →</a>
+      </div>
+    </div>
+  </section>
+);
+
+/* ——— faq ——— */
+const FAQS = [
+  ["como recebo o guia depois da compra?", "após a confirmação do pagamento, você recebe um e-mail com o acesso à plataforma onde o guia fica hospedado. é online, navegável pelo celular ou computador, e fica salvo na sua área pra sempre."],
+  ["as atualizações mensais têm custo extra?", "não. o pagamento é único. todas as atualizações futuras já estão incluídas. você compra uma vez e recebe as edições novas todo mês, sem mensalidade."],
+  ["posso comprar o guia junto com um projeto da casa criativa?", "sim. o guia pode ser adquirido separado, ideal pra quem quer autonomia com orientação, ou como complemento de um projeto contratado conosco — fazendo todo o caminho de seleção e compra mais fluido."],
+  ["preciso ser cliente da casa criativa pra aproveitar?", "de jeito nenhum. o guia foi pensado especialmente pra quem quer executar o ambiente por conta própria, mas com a tranquilidade de ter uma curadoria profissional por trás de cada link."],
+  ["e se um produto sair do mercado?", "essa é a melhor parte. fazemos substituições inteligentes a cada atualização, mantendo o estilo, a função e a faixa de preço do item original. nada de ficar olhando 'produto indisponível'."],
+  ["posso pagar parcelado?", "sim. o checkout aceita cartão de crédito em até 12x e também pix à vista com desconto."],
+];
+const Faq = () => {
+  const [open, setOpen] = useState(0);
+  return (
+    <section className="faq">
+      <div className="faq__head">
+        <h2 className="faq__title">perguntas <em>frequentes</em></h2>
+        <p className="faq__lead">o que mais nos perguntam por dm e direct sobre o guia. se sobrar dúvida, fale com a gente.</p>
+      </div>
+      <div className="faq__list">
+        {FAQS.map(([q, a], i) => (
+          <details key={i} className="qa" open={open === i} onToggle={(e) => e.target.open && setOpen(i)}>
+            <summary className="qa__btn" style={{listStyle:"none"}}>
+              <span className="qa__num">{String(i+1).padStart(2,"0")}</span>
+              <span>{q}</span>
+              <span className="qa__plus" aria-hidden></span>
+            </summary>
+            <div className="qa__body">{a}</div>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+/* ——— offer ——— */
+const Offer = ({ tweaks }) => (
+  <section className="offer" id="oferta">
+    <div className="offer__inner">
+      <div className="offer__eye">/ 07 · oferta</div>
+      <h2 className="offer__title">leve <em>amar</em> pra dentro de casa.</h2>
+      <p className="offer__lead">acesso vitalício ao guia, com atualizações mensais para sempre. sem mensalidade, sem renovação.</p>
+
+      <div className="price-card">
+        <div className="price-card__eye">/ pagamento único</div>
+        <div className="price-card__amount">
+          <span className="price-card__currency">R$</span>
+          <span>119</span>
+          <span className="price-card__cents">,90</span>
+        </div>
+        <p className="price-card__sub">ou 12× de R$ 11,99 no cartão · pix com 8% de desconto</p>
+
+        <ul className="price-card__bullets">
+          <li>+1.300 itens curados, organizados em 12 capítulos</li>
+          <li>links diretos de compra, atualizados todo mês</li>
+          <li>dicas de proporção, composição e uso</li>
+          <li>acesso vitalício pelo navegador ou celular</li>
+          <li>todas as próximas edições incluídas</li>
+        </ul>
+
+        <a href={EDUZZ_URL} target="_blank" rel="noopener" className="btn btn--solid">{tweaks.ctaLabel}</a>
+        <div className="price-card__guar">7 dias de garantia · acesso imediato</div>
+      </div>
+    </div>
+  </section>
+);
+
+/* ——— footer ——— */
+const Footer = () => (
+  <>
+    <StripWords />
+    <footer className="foot">
+      <div className="foot__inner">
+        <div>
+          <h3 className="foot__brand">amar</h3>
+          <div className="foot__sub">casa · criativa</div>
+        </div>
+        <div className="foot__col">
+          <h4>guia</h4>
+          <ul>
+            <li><a href="#bastidores">o que é</a></li>
+            <li><a href="#oferta">comprar</a></li>
+            <li><a href="#">faq</a></li>
+            <li><a href="#">termos</a></li>
+          </ul>
+        </div>
+        <div className="foot__col">
+          <h4>contato</h4>
+          <ul>
+            <li><a href="https://instagram.com/amarcasacriativa">@amarcasacriativa</a></li>
+            <li><a href="https://instagram.com/guiacasacriativa">@guiacasacriativa</a></li>
+            <li><a href="mailto:contato@casacriativa.com">contato@casacriativa.com</a></li>
+            <li><a href="#">whatsapp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="foot__bottom">
+        <span>© 2026 casa criativa</span>
+        <span>feito com calma</span>
+      </div>
+    </footer>
+  </>
+);
+
+/* ——— tweaks panel ——— */
+const Panel = ({ tweaks, setTweak }) => {
+  const T = window.TweaksPanel; const S = window.TweakSection;
+  const R = window.TweakRadio; const Tg = window.TweakToggle; const Tx = window.TweakText;
+  if (!T) return null;
+  return (
+    <T title="tweaks">
+      <S title="paleta">
+        <R label="cor de acento"
+           value={tweaks.palette}
+           onChange={(v)=>setTweak("palette", v)}
+           options={[
+             {value:"terra", label:"terra"},
+             {value:"petrol", label:"petrol"},
+             {value:"mono", label:"mono"},
+           ]} />
+      </S>
+      <S title="hero">
+        <R label="layout"
+           value={tweaks.hero}
+           onChange={(v)=>setTweak("hero", v)}
+           options={[
+             {value:"centered", label:"centered"},
+             {value:"split", label:"split"},
+             {value:"editorial", label:"editorial"},
+           ]} />
+      </S>
+      <S title="copy do cta">
+        <Tx label="texto do botão" value={tweaks.ctaLabel} onChange={(v)=>setTweak("ctaLabel", v)} />
+      </S>
+      <S title="seções">
+        <Tg label="mostrar números (stats)" value={tweaks.showStats} onChange={(v)=>setTweak("showStats", v)} />
+        <Tg label="mostrar depoimentos" value={tweaks.showVoices} onChange={(v)=>setTweak("showVoices", v)} />
+        <Tg label="mostrar calendário de updates" value={tweaks.showCalendar} onChange={(v)=>setTweak("showCalendar", v)} />
+      </S>
+    </T>
+  );
+};
+
+/* ——— app ——— */
+const App = () => {
+  const useTw = window.useTweaks;
+  const [tweaks, setTweak] = useTw ? useTw(TWEAK_DEFAULTS) : [TWEAK_DEFAULTS, ()=>{}];
+
+  useEffect(() => {
+    document.body.dataset.palette = tweaks.palette;
+    document.body.dataset.hero = tweaks.hero;
+  }, [tweaks.palette, tweaks.hero]);
+
+  return (
+    <>
+      <Hero tweaks={tweaks} />
+      <Bastidores />
+      {tweaks.showStats && <Stats />}
+      <ForWhom />
+      <Categories />
+      <Preview />
+      {tweaks.showCalendar && <Updates />}
+      {tweaks.showVoices && <Voices />}
+      <VideoDepo />
+      <Offer tweaks={tweaks} />
+      <Faq />
+      <Footer />
+      <Panel tweaks={tweaks} setTweak={setTweak} />
+    </>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+
+</body>
+</html>
